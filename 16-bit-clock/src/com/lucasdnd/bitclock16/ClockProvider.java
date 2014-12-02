@@ -127,35 +127,20 @@ public class ClockProvider extends AppWidgetProvider {
 		int hour = today.hour;
 		int minute = today.minute;
 		int second = today.second;
-		double time = second + (minute * 60) + (hour * 60 * 60);
-		double secondsInDay = 86400; // Seconds in a day
-		double decimalHour = time * 100 / secondsInDay;
-		int decimalMinuteInt = (int)(Math.floor((decimalHour - Math.floor(decimalHour)) * 100));
+		int time = second + (minute * 60) + (hour * 60 * 60);
 		
-		// Strings that will be shown on the widget
-		String decimalHourString = "" + ((int)decimalHour);
-		if(decimalHourString.length() == 1) {
-			decimalHourString = "0" + decimalHourString;
-		}
-		String decimalMinuteString = "" + decimalMinuteInt;
-		if(decimalMinuteString.length() == 1) {
-			decimalMinuteString =  "0" + decimalMinuteString;
-		}
-		
+		// Draw the dots
 		Bitmap bitmap = Bitmap.createBitmap(canvasSize, canvasSize, Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		Paint p = new Paint();
 		p.setAntiAlias(true);
-		
-		// Draw the dots
-		p.setColor(Color.argb(128, 64, 64, 64));
 		p.setStyle(Paint.Style.FILL);
 		
-		java.util.Random r = new java.util.Random();
-		int choice = r.nextInt(16);
+		System.out.println("time = " + time);
+		System.out.println("bits = " + Integer.toBinaryString(time));
 		
 		for (int i = 0; i < 16; i++) {
-			if (i == choice) {
+			if (((time >> i) & 1) == 1) {
 				p.setColor(Color.argb(255, 242, 242, 242));
 			} else {
 				p.setColor(Color.argb(128, 64, 64, 64));
