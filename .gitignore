@@ -24,3 +24,7 @@ proguard/
 
 # Log Files
 *.log
+
+*.keystore
+
+.DS_Store
