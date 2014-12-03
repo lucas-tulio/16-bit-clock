@@ -104,6 +104,9 @@ public class ClockProvider extends AppWidgetProvider {
 			
 			// Get the layout for the App Widget and attach an on-click listener to the button
 			AppWidgetProviderInfo appInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
+			if (context == null || appInfo == null) {
+				return;
+			}
 			RemoteViews views = new RemoteViews(context.getPackageName(), appInfo.initialLayout);
 			
 			// Update The clock label using a shared method
