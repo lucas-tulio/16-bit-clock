@@ -26,7 +26,7 @@ public class ClockProvider extends AppWidgetProvider {
 	public static final String CLOCK_UPDATE = "com.lucasdnd.bitclock16.CLOCK_UPDATE";
 	public static final String SWITCH_COLORS_ACTION = "com.lucasdnd.bitclock16.SWITCH_COLORS";
 	private static final double SECONDS_IN_DAY = 86400.0;
-	private static final double TICK = (SECONDS_IN_DAY / 65535.0) * 1000.0;
+	private static final double TICK = (SECONDS_IN_DAY / 65536.0) * 1000.0;
 	private static final int CANVAS_SIZE = 384;
 	private static final int DOT_SIZE = 12;
 	
