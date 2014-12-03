@@ -31,6 +31,8 @@ public class ClockProvider extends AppWidgetProvider {
 	private static final int DOT_SIZE = 12;
 	
 	private static boolean isWhiteColor = true;
+	private static int currentTime = 0;
+	private static boolean isFirstCall = true;
 	
 	@Override
 	public void onReceive(Context context, Intent intent) {
@@ -122,14 +124,23 @@ public class ClockProvider extends AppWidgetProvider {
 		AppWidgetProviderInfo appInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
 		RemoteViews views = new RemoteViews(context.getPackageName(), appInfo.initialLayout);
 		
-		// Update the time text
+		// Resync
 		Time today = new Time(Time.getCurrentTimezone());
 		today.setToNow();
 		int hour = today.hour;
 		int minute = today.minute;
 		int second = today.second;
-		double currentSeconds = second + (minute * 60) + (hour * 60 * 60);
-		int time = (int) (currentSeconds / (TICK / 1000.0));
+		
+		if (isFirstCall) {
+			System.out.println("First call. syncing");
+			resyncTime();			
+			isFirstCall = false;
+		} else if (hour == 23 && minute == 59 && second == 59) {
+			resyncTime();
+		} else {
+			// To avoid precision errors, we manually increase our timer
+			currentTime++;
+		}
 		
 		// Draw the dots
 		Bitmap bitmap = Bitmap.createBitmap(CANVAS_SIZE, CANVAS_SIZE, Config.ARGB_8888);
@@ -138,11 +149,8 @@ public class ClockProvider extends AppWidgetProvider {
 		p.setAntiAlias(true);
 		p.setStyle(Paint.Style.FILL);
 		
-		System.out.println("time = " + time);
-		System.out.println("bits = " + Integer.toBinaryString(time));
-		
 		for (int i = 0; i < 16; i++) {
-			if (((time >> i) & 1) == 1) {
+			if (((currentTime >> i) & 1) == 1) {
 				p.setColor(Color.argb(255, 242, 242, 242));
 			} else {
 				p.setColor(Color.argb(128, 64, 64, 64));
@@ -152,5 +160,16 @@ public class ClockProvider extends AppWidgetProvider {
 		
 		views.setImageViewBitmap(R.id.image, bitmap); 		
 		appWidgetManager.updateAppWidget(appWidgetId, views);
+	}
+	
+	private static void resyncTime() {
+		Time today = new Time(Time.getCurrentTimezone());
+		today.setToNow();
+		int hour = today.hour;
+		int minute = today.minute;
+		int second = today.second;
+		
+		double currentSeconds = second + (minute * 60) + (hour * 60 * 60);
+		currentTime = (int) (currentSeconds / (TICK / 1000.0));
 	}
 }
