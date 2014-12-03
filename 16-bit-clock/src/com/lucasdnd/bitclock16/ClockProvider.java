@@ -30,7 +30,16 @@ public class ClockProvider extends AppWidgetProvider {
 	private static final int CANVAS_SIZE = 384;
 	private static final int DOT_SIZE = 12;
 	
-	private static boolean isWhiteColor = true;
+	// Colors
+	private static final int WHITE = 0;
+	private static final int GRAY = 1;
+	private static final int BLUE = 2;
+	private static final int RED = 3;
+	private static int currentColor = 0;
+	private static int onColor = Color.argb(255, 242, 242, 242);
+	private static int offColor = Color.argb(128, 64, 64, 64);
+	
+	// Time Control
 	private static int currentTime = 0;
 	private static boolean isFirstCall = true;
 	
@@ -53,11 +62,7 @@ public class ClockProvider extends AppWidgetProvider {
 		
 		// Touch Event
 		if(SWITCH_COLORS_ACTION.equals(intent.getAction())) {
-			int ids[] = appWidgetManager.getAppWidgetIds(thisAppWidget);
-		    for (int appWidgetID: ids) {
-		    	isWhiteColor = !isWhiteColor;
-		    	updateClock(context, appWidgetManager, appWidgetID);
-		    }
+		    changeColor();
 		}
 	}
 	
@@ -154,9 +159,9 @@ public class ClockProvider extends AppWidgetProvider {
 		
 		for (int i = 0; i < 16; i++) {
 			if (((currentTime >> i) & 1) == 1) {
-				p.setColor(Color.argb(255, 242, 242, 242));
+				p.setColor(onColor);
 			} else {
-				p.setColor(Color.argb(128, 64, 64, 64));
+				p.setColor(offColor);
 			}
 			canvas.drawCircle(DOT_SIZE + ((DOT_SIZE * 10) * (i % 4)), DOT_SIZE + ((DOT_SIZE * 10) * ((i / 4) % 4)), DOT_SIZE, p);
 		}
@@ -174,5 +179,34 @@ public class ClockProvider extends AppWidgetProvider {
 		
 		double currentSeconds = second + (minute * 60) + (hour * 60 * 60);
 		currentTime = (int) (currentSeconds / (TICK / 1000.0));
+	}
+	
+	private static void changeColor() {
+		
+		currentColor++;
+		if (currentColor > 3) {
+			currentColor = 0;
+		}
+		
+		switch(currentColor) {
+		case WHITE:
+			onColor = Color.argb(255, 242, 242, 242);
+			offColor = Color.argb(128, 64, 64, 64);
+			break;
+		case GRAY:
+			onColor = Color.argb(255, 64, 64, 64);
+			offColor = Color.argb(64, 64, 64, 64);
+			break;
+		case BLUE:
+			onColor = Color.argb(255, 63, 156, 255);
+			offColor = Color.argb(64, 63, 156, 255);
+			break;
+		case RED:
+			onColor = Color.argb(225, 232, 46, 46);
+			offColor = Color.argb(64, 242, 46, 46);
+			break;
+		default:
+			break;
+		}
 	}
 }
