@@ -29,9 +29,10 @@ public class ClockProvider extends AppWidgetProvider {
 
 	// Colors
 	private static final int WHITE = 0;
-	private static final int GRAY = 1;
-	private static final int BLUE = 2;
-	private static final int RED = 3;
+	private static final int WHITE_NO_BG = 1;
+	private static final int GRAY = 2;
+	private static final int BLUE = 3;
+	private static final int RED = 4;
 	private static int currentColor = 0;
 	private static int onColor = Color.argb(255, 242, 242, 242);
 	private static int offColor = Color.argb(128, 64, 64, 64);
@@ -186,7 +187,7 @@ public class ClockProvider extends AppWidgetProvider {
 	private static void changeColor() {
 
 		currentColor++;
-		if (currentColor > 3) {
+		if (currentColor > 4) {
 			currentColor = 0;
 		}
 
@@ -194,6 +195,10 @@ public class ClockProvider extends AppWidgetProvider {
 		case WHITE:
 			onColor = Color.argb(255, 242, 242, 242);
 			offColor = Color.argb(128, 64, 64, 64);
+			break;
+		case WHITE_NO_BG:
+			onColor = Color.argb(255, 242, 242, 242);
+			offColor = Color.argb(0, 0, 0, 0);
 			break;
 		case GRAY:
 			onColor = Color.argb(255, 64, 64, 64);
