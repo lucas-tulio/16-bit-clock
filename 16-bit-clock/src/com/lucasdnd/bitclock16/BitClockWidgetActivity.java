@@ -11,6 +11,5 @@ public class BitClockWidgetActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.widgetlayout);
-        System.out.println("started");
     }
 }
