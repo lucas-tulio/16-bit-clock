@@ -130,24 +130,16 @@ public class ClockProvider extends AppWidgetProvider {
 		// Get a reference to our Remote View
 		AppWidgetProviderInfo appInfo = appWidgetManager.getAppWidgetInfo(appWidgetId);
 		RemoteViews views = new RemoteViews(context.getPackageName(), appInfo.initialLayout);
-
-		// Resync
-		Time today = new Time(Time.getCurrentTimezone());
-		today.setToNow();
-		int hour = today.hour;
-		int minute = today.minute;
-		int second = today.second;
-
+		
+		// Update clock
 		if (isFirstCall) {
-			System.out.println("First call. syncing");
 			resyncTime();
 			isFirstCall = false;
-		} else if (hour == 23 && minute == 59 && second == 59) {
-			resyncTime();
 		} else {
-			// To avoid precision errors, we manually increase our timer
-			if (currentTime >= 65535) {
-				currentTime = 0;
+			
+			// To avoid precision errors
+			if (currentTime % 1000 == 0) {
+				resyncTime();
 			} else {
 				currentTime++;
 			}
