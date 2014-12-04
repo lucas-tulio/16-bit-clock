@@ -147,7 +147,11 @@ public class ClockProvider extends AppWidgetProvider {
 			resyncTime();
 		} else {
 			// To avoid precision errors, we manually increase our timer
-			currentTime++;
+			if (currentTime >= 65535) {
+				currentTime = 0;
+			} else {
+				currentTime++;
+			}
 		}
 		
 		// Draw the dots
