@@ -8,7 +8,7 @@
    android:maxHeight="180dp"
    android:updatePeriodMillis="1318"
    android:resizeMode="horizontal|vertical"
-   
+   android:previewImage="@drawable/icon"
    android:widgetCategory="home_screen"
    android:initialLayout="@layout/widgetlayout">
 </appwidget-provider>
