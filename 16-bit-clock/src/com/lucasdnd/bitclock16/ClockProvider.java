@@ -138,7 +138,7 @@ public class ClockProvider extends AppWidgetProvider {
 		} else {
 			
 			// To avoid precision errors
-			if (currentTime % 1000 == 0) {
+			if (currentTime % 64 == 0) {
 				resyncTime();
 			} else {
 				currentTime++;
